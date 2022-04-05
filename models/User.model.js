@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { Schema, model } = mongoose;
+const { Schema,model,SchemaTypes } = mongoose;
 
 const userSchema = new Schema({
   firstName: {
@@ -17,25 +17,35 @@ const userSchema = new Schema({
   },
   username: {
     type: String,
+    required:true,
+    unique:true,
   },
   password: {
     type: String,
     required: true,
+    min:4
   },
   createdAt: {
-    type: String,
+    type: Date,
+    default: Date.now,
   },
   score: {
-    type: String,
+    type: Number,
+    default: 0,
   },
   products: {
-    type: String,
+    type: [String],
+    default:[],
   },
   comments: {
-    type: String,
+    type: [SchemaTypes.ObjectId],
+    ref: 'Comment',
+    default: [],
   },
   image: {
     type: String,
+    default:
+        'https://upload.wikimedia.org/wikipedia/commons/7/70/User_icon_BLACK-01.png',
   },
   country: {
     type: String,
@@ -44,7 +54,8 @@ const userSchema = new Schema({
     type: String,
   },
   money: {
-    type: String,
+    type: Number,
+    default: 0,
   },
 });
 
