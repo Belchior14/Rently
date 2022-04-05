@@ -15,4 +15,7 @@ app.use(express.json());
 const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
+const productRoutes = require("./routes/product.routes");
+app.use("/product", productRoutes);
+
 app.listen(process.env.PORT);

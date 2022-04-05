@@ -1,8 +1,58 @@
 const mongoose = require("mongoose");
-const { Schema, model } = mongoose;
+const { Schema, model,SchemaTypes } = mongoose;
 
 const productSchema = new Schema({
-  });
+  category: {
+    type: String,
+    required: true,
+    enum: ["Technology", "Sports", "Home", "Leisure", "Others"],
+  },
+
+  name: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+
+  description: {
+    type: String,
+    required: true,
+    max: 150,
+  },
+  price: {
+    type: Number,
+    required: true,
+    min:1
+  },
+  city:{
+    type: String,
+    required: true,
+  },
+  country:{
+    type: String,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
+  user: {
+    type: [SchemaTypes.ObjectId],
+    ref: 'User',
+    default: [],
+  },
+  comments: {
+    type: [SchemaTypes.ObjectId],
+    ref: 'Comment',
+    default: [],
+  },
+
+
+
+});
 
 const Product = model("Product", productSchema);
 
