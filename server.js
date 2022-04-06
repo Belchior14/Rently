@@ -1,8 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
+const {authenticate} = require("./middlewares/jwt.middleware")
 const cors = require("cors");
 dotenv.config();
+
 
 mongoose.connect(process.env.MONGO_DB_URL);
 
@@ -16,6 +18,6 @@ const authRoutes = require("./routes/auth.routes");
 app.use("/auth", authRoutes);
 
 const productRoutes = require("./routes/product.routes");
-app.use("/product", productRoutes);
+app.use("/product",authenticate, productRoutes);
 
 app.listen(process.env.PORT);

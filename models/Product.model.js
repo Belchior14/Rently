@@ -40,9 +40,9 @@ const productSchema = new Schema({
     default: Date.now,
   },
   user: {
-    type: [SchemaTypes.ObjectId],
+    type: SchemaTypes.ObjectId,
     ref: 'User',
-    default: [],
+    
   },
   comments: {
     type: [SchemaTypes.ObjectId],

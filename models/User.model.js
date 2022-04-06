@@ -34,8 +34,9 @@ const userSchema = new Schema({
     default: 0,
   },
   products: {
-    type: [String],
+    type: [SchemaTypes.ObjectId],
     default:[],
+    ref:"Product",
   },
   comments: {
     type: [SchemaTypes.ObjectId],

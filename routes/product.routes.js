@@ -1,22 +1,35 @@
 const express = require("express");
-const Product = require("../models/Product.model")
-
-
+const Product = require("../models/Product.model");
 
 const router = express.Router();
 
-router.post("/add" , async (req,res)=> {
+//route to see all the products
+router.get("/", async (req, res) => {
+  const product = await Product.find();
 
-    const {category, name, image,description, price,city, country } = req.body
+  res.status(200).json(product);
+});
 
+//route to add one product
+router.post("/add", async (req, res) => {
+  const { category, name, image, description, price, city, country } = req.body;
 
-    const product = await Product.create({category, name, image,description, price,city, country})
+  const user = req.jwtPayload.user._id;
 
-    res.status(200).json(product)
-})
+  console.log(req.jwtPayload);
 
+  const product = await Product.create({
+    category,
+    name,
+    image,
+    description,
+    price,
+    city,
+    country,
+    user,
+  });
 
-
-
+  res.status(200).json(product);
+});
 
 module.exports = router;
