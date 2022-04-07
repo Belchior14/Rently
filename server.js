@@ -20,4 +20,7 @@ app.use("/auth", authRoutes);
 const productRoutes = require("./routes/product.routes");
 app.use("/product",authenticate, productRoutes);
 
+const profileRoutes = require("./routes/profile.routes");
+app.use("/profile",authenticate, profileRoutes);
+
 app.listen(process.env.PORT);

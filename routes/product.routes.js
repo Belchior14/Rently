@@ -26,6 +26,13 @@ router.post("/add", async (req, res) => {
   res.status(200).json(product);
 });
 
+//route for individual product page
+router.get("/:id", async (req,res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id);
+  res.status(200).json(`Here is the product ${product}`)
+})
+
 //route to delete a product only if you are the owner
 router.delete("/:id", async (req, res) => {
   const { id } = req.params;
