@@ -1,5 +1,6 @@
 const express = require("express");
 const Product = require("../models/Product.model");
+const User = require("../models/User.model");
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ router.get("/", async (req, res) => {
 router.post("/add", async (req, res) => {
   const { category, name, image, description, price, city, country } = req.body;
   const user = req.jwtPayload.user._id;
+  const userOfTheProduct = await User.findById(user);
   const product = await Product.create({
     category,
     name,
@@ -23,15 +25,17 @@ router.post("/add", async (req, res) => {
     country,
     user,
   });
+  userOfTheProduct.products.push(product);
+  await userOfTheProduct.save();
   res.status(200).json(product);
 });
 
 //route for individual product page
-router.get("/:id", async (req,res) => {
+router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
-  res.status(200).json(`Here is the product ${product}`)
-})
+  res.status(200).json(`Here is the product ${product}`);
+});
 
 //route to delete a product only if you are the owner
 router.delete("/:id", async (req, res) => {
