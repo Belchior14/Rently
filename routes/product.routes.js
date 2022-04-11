@@ -34,6 +34,10 @@ router.post("/add", async (req, res) => {
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
+  const rentUserId = product.user; // set the ID of the person who is renting the product
+  const rentUser = await User.findById(rentUserId); // set the Data of the person who is renting the product
+  
+
   res.status(200).json(`Here is the product ${product}`);
 });
 
@@ -71,7 +75,6 @@ router.put("/:id", async (req, res) => {
 });
 
 //route to rent a product
-
 router.post("/rent/:id", async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id); //find the product selected

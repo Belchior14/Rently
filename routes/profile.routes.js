@@ -7,7 +7,7 @@ const router = express.Router();
 //route to see the user profile
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
-  const user = await User.findById(id).populate("products");
+  const user = await User.findById(id).populate("products").populate("rentedProducts");
   res.status(200).json(user);
 });
 
