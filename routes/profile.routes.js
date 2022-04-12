@@ -1,12 +1,15 @@
 const express = require("express");
 const User = require("../models/User.model");
-const { isLoggedIn } = require("../middlewares/guard");
+const Product = require("../models/Product.model")
 
 const router = express.Router();
 
 //profile page
-router.get("/profile", isLoggedIn, (req, res) => {
-    res.render("user/profile");
+router.get("/:id", async (req, res) => {
+    const {id} = req.params;
+    const user = await User.findById(id);
+    const product = await Product.find();
+    res.status(200).json(user);
   });
 
 //home route
