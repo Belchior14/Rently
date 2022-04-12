@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
   const rentUser = await User.findById(rentUserId); // set the Data of the person who is renting the product
   
 
-  res.status(200).json(`Here is the product ${product}`);
+  res.status(200).json({product,rentUser});
 });
 
 //route to delete a product only if you are the owner
