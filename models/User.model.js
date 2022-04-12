@@ -38,6 +38,11 @@ const userSchema = new Schema({
     default:[],
     ref:"Product",
   },
+  rentedProducts:{
+    type: [SchemaTypes.ObjectId],
+    default:[],
+    ref:"Product"
+  },
   comments: {
     type: [SchemaTypes.ObjectId],
     ref: 'Comment',

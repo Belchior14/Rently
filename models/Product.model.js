@@ -42,16 +42,15 @@ const productSchema = new Schema({
   user: {
     type: SchemaTypes.ObjectId,
     ref: 'User',
-    
   },
   comments: {
     type: [SchemaTypes.ObjectId],
     ref: 'Comment',
     default: [],
   },
-
-
-
+  scheduledDates:{
+    type:[String]
+  }
 });
 
 const Product = model("Product", productSchema);
