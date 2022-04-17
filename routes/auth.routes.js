@@ -23,7 +23,7 @@ router.post("/signup", async (req, res) => {
       });
       res.status(200).json(user);
     } catch (error) {
-      res.status(500).json(error);
+      res.status(409).json("Email already exists");
     }
   } else {
     res.status(500).json("email or username already exists");
@@ -60,5 +60,12 @@ router.post("/login", async (req, res) => {
     res.status(500).json(error);
   }
 });
+
+//route to see all the users
+
+router.get("/" ,async (req,res)=> {
+  const users = await User.find()
+  res.status(200).json(users)
+})
 
 module.exports = router;
