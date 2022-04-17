@@ -1,6 +1,7 @@
 const express = require("express");
 const Product = require("../models/Product.model");
 const User = require("../models/User.model");
+const {authenticate} = require("../middlewares/jwt.middleware")
 
 const router = express.Router();
 
@@ -11,7 +12,7 @@ router.get("/", async (req, res) => {
 });
 
 //route to add one product
-router.post("/add", async (req, res) => {
+router.post("/add",authenticate, async (req, res) => {
   const { category, name, image, description, price, city, country } = req.body;
   const user = req.jwtPayload.user._id;
   const userOfTheProduct = await User.findById(user);
@@ -31,7 +32,7 @@ router.post("/add", async (req, res) => {
 });
 
 //route for individual product page
-router.get("/:id", async (req, res) => {
+router.get("/:id",authenticate, async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
   const rentUserId = product.user; // set the ID of the person who is renting the product
@@ -42,7 +43,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //route to delete a product only if you are the owner
-router.delete("/:id", async (req, res) => {
+router.delete("/:id",authenticate, async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
   if (product.user.toString() === req.jwtPayload.user._id) {
@@ -54,7 +55,7 @@ router.delete("/:id", async (req, res) => {
 });
 
 //route to edit a product only if you are the owner
-router.put("/:id", async (req, res) => {
+router.put("/:id",authenticate, async (req, res) => {
   const { id } = req.params;
   const { category, name, image, description, price, city, country } = req.body;
   let product = await Product.findById(id);
@@ -75,7 +76,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //route to rent a product
-router.post("/rent/:id", async (req, res) => {
+router.post("/rent/:id",authenticate, async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id); //find the product selected
   // the user can only rent a product that nor belong to them
