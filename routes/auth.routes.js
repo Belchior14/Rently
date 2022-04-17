@@ -8,19 +8,27 @@ const router = express.Router();
 //route to create an user
 router.post("/signup", async (req, res) => {
   const { firstName, lastName, email, password, username} = req.body;
-  try {
-    const passwordHash = await bcrypt.hash(password, 10);
-    const user = await User.create({
-      firstName,
-      lastName,
-      email,
-      username,
-      password: passwordHash,
-    });
-    res.status(200).json(user);
-  } catch (error) {
-    res.status(500).json(error);
+
+  const userFound = await User.findOne({email, username})
+  if(!userFound){
+
+    try {
+      const passwordHash = await bcrypt.hash(password, 10);
+      const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        username,
+        password: passwordHash,
+      });
+      res.status(200).json(user);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  } else {
+    res.status(500).json("email or username already exists");
   }
+  
 });
 
 //route to log in 
