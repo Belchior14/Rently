@@ -11,5 +11,13 @@ router.get("/:id", async (req, res) => {
     res.status(200).json(user);
   });
 
+  router.post("/:id", async (req,res) => {
+    const {id} = req.params;
+    const user = await User.findById(id).populate("products").populate("rentedProducts");
+    user.money += 100;
+    user.save()
+    res.status(200).json(user)
+  })
+
 
 module.exports = router;
