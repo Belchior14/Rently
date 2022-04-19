@@ -50,6 +50,11 @@ const productSchema = new Schema({
   },
   scheduledDates:{
     type:[String]
+  },
+  rented:{
+    type: Boolean,
+    default: false
+
   }
 });
 
