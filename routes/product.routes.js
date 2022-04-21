@@ -54,7 +54,7 @@ router.delete("/:id", authenticate, async (req, res) => {
 });
 
 //route to edit a product only if you are the owner
-router.put("/:id", authenticate, async (req, res) => {
+router.put("/edit/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const { category, name, image, description, price, city, country } = req.body;
   let product = await Product.findById(id);
