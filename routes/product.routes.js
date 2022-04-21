@@ -8,7 +8,7 @@ const router = express.Router();
 //route to see all the products
 router.get("/", async (req, res) => {
   const product = await Product.find();
-  res.status(200).json(product);
+  res.status(200).json({product , message:"test"});
 });
 
 //route to add one product
