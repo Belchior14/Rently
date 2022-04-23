@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const {authenticate} = require("./middlewares/jwt.middleware")
 const cors = require("cors");
+const upload = require('./config/cloudstorage')
 dotenv.config();
 
 
@@ -22,5 +23,9 @@ app.use("/product", productRoutes);
 
 const profileRoutes = require("./routes/profile.routes");
 app.use("/profile",authenticate, profileRoutes);
+
+app.post('/upload', upload.single('myFile'), (req, res) => {
+    res.json(req.file)
+  })
 
 app.listen(process.env.PORT);
