@@ -67,7 +67,7 @@ router.put("/edit/:id", authenticate, async (req, res) => {
     product.price = price;
     product.city = city;
     product.country = country;
-    product = await product.save();
+    await product.save();
     res.status(200).json("Product edited with sucess!");
   } else {
     res.status(401).json("You are not the owner of the product");
