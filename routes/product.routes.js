@@ -46,6 +46,10 @@ router.delete("/:id", authenticate, async (req, res) => {
   const { id } = req.params;
   const product = await Product.findById(id);
   if (product.user.toString() === req.jwtPayload.user._id) {
+    const user = await User.findById(req.jwtPayload.user._id)
+    const userProducts = user.products
+    userProducts.remove(product.id) // remove the product from the user products array
+    await user.save()
     await Product.findByIdAndDelete(id);
     res.status(200).json("Product deleted with sucess!");
   } else {
