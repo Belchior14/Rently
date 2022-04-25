@@ -8,7 +8,7 @@ const router = express.Router();
 //route to see all the products
 router.get("/", async (req, res) => {
   const product = await Product.find();
-  res.status(200).json({product , message:"test"});
+  res.status(200).json({ product, message: "test" });
 });
 
 //route to add one product
@@ -98,6 +98,24 @@ router.post("/rent/:id", authenticate, async (req, res) => {
     }
   } else {
     res.status(500).json("You can't rent your own products");
+  }
+});
+
+//route to unrent a product
+router.post("/unrent/:id", authenticate, async (req, res) => {
+  const { id } = req.params;
+  const product = await Product.findById(id); //find the product selected
+  const user = await User.findById(req.jwtPayload.user._id); //find the user
+  const userRentedProducts = user.rentedProducts; //get the array of products that the user has rentered
+  const foundIdProduct = userRentedProducts.includes(product.id);// check if the product id is inside of the array of the user's products rentered
+  if (foundIdProduct) { //if yes
+    product.rented = !product.rented //change the state of the product rented to False
+    await product.save()
+    userRentedProducts.remove(product.id) //and remove the product of the user's products rentered array
+    await user.save()
+    res.status(200).json(user)
+  } else {
+    res.status(504).json("You can't do this") 
   }
 });
 
