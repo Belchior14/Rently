@@ -84,17 +84,17 @@ router.post("/rent/:id", authenticate, async (req, res) => {
   const product = await Product.findById(id); //find the product selected
   // the user can only rent a product that nor belong to them
   if (product.user.toString() !== req.jwtPayload.user._id) {
-    if (product.rented === false) {
+    const user = await User.findById(req.jwtPayload.user._id); // find the user that is logged in
+    const price = product.price; // set the price of the product
+    if (product.rented === false && user.money >= price) {
       product.rented = !product.rented; // changes the status of the product
       await product.save();
-      const user = await User.findById(req.jwtPayload.user._id); // find the user that is logged in
-      const price = product.price; // set the price of the product
       const rentUserId = product.user; // set the ID of the person who is renting the product
       const rentUser = await User.findById(rentUserId); // set the Data of the person who is renting the product
-      rentUser.money += price; // new value for the money of the user who is renting the product
+      rentUser.money += price * 0.95; // new value for the money of the user who is renting the product
       await rentUser.save(); // saving the user who is renting the product
       user.rentedProducts.push(product); // add the product to the list of rented products who the user paid
-      user.money -= price * 0.95; // new value for the money of the user who paid the rent
+      user.money -= price; // new value for the money of the user who paid the rent
       await user.save(); // saving the user who paid the rent
       res.status(200).json("Congratulations! You rented this product!");
     } else {
