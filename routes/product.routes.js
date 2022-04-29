@@ -35,7 +35,7 @@ router.post("/add", authenticate, async (req, res) => {
 //route for individual product page
 router.get("/:id", authenticate, async (req, res) => {
   const { id } = req.params;
-  const product = await Product.findById(id);
+  const product = await Product.findById(id).populate("comments").populate("user")
   const rentUserId = product.user; // set the ID of the person who is renting the product
   const rentUser = await User.findById(rentUserId); // set the Data of the person who is renting the product
 
@@ -131,7 +131,7 @@ router.post("/:id" , authenticate , async (req,res) => {
   const product = await Product.findById(id); //find the product selected
   const user = await User.findById(req.jwtPayload.user._id); //find the user
   const { title, description} = req.body;
-  const comment = await Comment.create({title, description, user:user})
+  const comment = await Comment.create({title, description, user:user , product:product , username: user.username})
   product.comments.push(comment)
   user.comments.push(comment)
   await product.save()
