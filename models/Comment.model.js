@@ -5,9 +5,16 @@ const commentSchema = new Schema({
     type: SchemaTypes.ObjectId,
     ref: "User",
   },
-  username: {
+  title: {
     type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+    required: true,
   },
 });
 
-module.exports = model("Comment", commentSchema);
+const Comment = model("Comment", commentSchema);
+
+module.exports = Comment;

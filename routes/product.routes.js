@@ -1,6 +1,7 @@
 const express = require("express");
 const Product = require("../models/Product.model");
 const User = require("../models/User.model");
+const Comment = require("../models/Comment.model")
 const { authenticate } = require("../middlewares/jwt.middleware");
 
 const router = express.Router();
@@ -122,5 +123,20 @@ router.post("/unrent/:id", authenticate, async (req, res) => {
     res.status(504).json("You can't do this") 
   }
 });
+
+//route to post a comment for a product
+router.post("/:id" , authenticate , async (req,res) => {
+
+  const {id} = req.params 
+  const product = await Product.findById(id); //find the product selected
+  const user = await User.findById(req.jwtPayload.user._id); //find the user
+  const { title, description} = req.body;
+  const comment = await Comment.create({title, description, user:user})
+  product.comments.push(comment)
+  user.comments.push(comment)
+  await product.save()
+  await user.save()
+  res.status(200).json(comment)
+})
 
 module.exports = router;
