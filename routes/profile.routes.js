@@ -25,11 +25,9 @@ router.put("/:id", async (req, res) => {
 
 router.put("/edit/:id", async (req, res) => {
   const { id } = req.params;
-  console.log(id, "the id")
   const { image } = req.body;
   const user = await User.findById(id);
   if (user._id.toString() === req.jwtPayload.user._id) {
-    console.log(user._id.toString(),req.jwtPayload.user._id)
     user.image = image;
     await user.save();
     res.status(200).json(user.image);
