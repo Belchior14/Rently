@@ -23,15 +23,16 @@ router.put("/:id", async (req, res) => {
   res.status(200).json(user);
 });
 
-router.put("/id", async (req, res) => {
+router.put("/edit/:id", async (req, res) => {
   const { id } = req.params;
+  console.log(id, "the id")
   const { image } = req.body;
   const user = await User.findById(id);
-  console.log(image)
-  if (user_id === req.jwtPayload.user._id) {
+  if (user._id.toString() === req.jwtPayload.user._id) {
+    console.log(user._id.toString(),req.jwtPayload.user._id)
     user.image = image;
     await user.save();
-    res.status(200).json("User edited with sucess!");
+    res.status(200).json(user.image);
   } else {
     res.status(401).json("You are not the user");
   }
